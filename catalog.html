@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusMarket | Product Catalog</title>
+  <title>UniStoreHub | Product Catalog</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="favcon.png">
 </head>
 <body>
 
   <header>
-    <a href="index.html" class="logo">CampusMarket</a>
+    <a href="index.html" class="logo">UniStoreHub</a>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
@@ -23,11 +24,27 @@
     <section class="catalog-header">
       <h1>Product Catalog</h1>
       <p>Browse available items posted by fellow students.</p>
+      <div class="catalog-tools">
+        <label class="search-box">
+          <span class="search-icon" aria-hidden="true">&#128269;</span>
+          <span class="visually-hidden">Search products</span>
+          <input type="search" id="product-search" placeholder="Search products..." autocomplete="off">
+        </label>
+        <button class="cart-button" type="button" aria-label="Shopping cart, 0 items">
+          <span class="cart-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L20.5 8H6.1M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm8 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
+            </svg>
+          </span>
+          <span>Cart</span>
+          <span class="cart-count" aria-live="polite">0</span>
+        </button>
+      </div>
     </section>
 
     <section class="product-grid">
       <!-- Item 1 -->
-      <article class="product-card">
+      <article class="product-card" data-product="Calculus Textbooks (11th Ed) Hardcover edition in excellent condition with minimal highlighting. Perfect for MAT101.">
         <div class="product-image-wrapper">
             <img src="img2.jpeg" alt="Calculus Textbooks (11th Ed)">
         </div>
@@ -35,11 +52,12 @@
         <p class="product-description">Hardcover edition in excellent condition with minimal highlighting. Perfect for MAT101.</p>
         <div class="product-footer">
           <span class="product-price">KES 2,500</span>
+          <button class="add-to-cart" type="button">Add to cart</button>
         </div>
       </article>
 
       <!-- Item 2 -->
-      <article class="product-card">
+      <article class="product-card" data-product="Scientific Calculator & Note Pad Casio fx-991EX. Works perfectly, solar/battery powered. Essential for engineering/math courses.">
         <div class="product-image-wrapper">
            <img src="img1.jpeg" alt="Scientific Calculator">
         </div>
@@ -47,11 +65,12 @@
         <p class="product-description">Casio fx-991EX. Works perfectly, solar/battery powered. Essential for engineering/math courses.</p>
         <div class="product-footer">
           <span class="product-price">KES 1,800</span>
+          <button class="add-to-cart" type="button">Add to cart</button>
         </div>
       </article>
 
       <!-- Item 3 -->
-      <article class="product-card">
+      <article class="product-card" data-product="Ergonomic Desk Chair Adjustable height with breathable mesh back. Lightweight and comfortable for study sessions.">
         <div class="product-image-wrapper">
 <img src="img4.jpeg" alt="Ergonomic Desk chair">
         </div>
@@ -59,11 +78,12 @@
         <p class="product-description">Adjustable height with breathable mesh back. Lightweight and comfortable for study sessions.</p>
         <div class="product-footer">
           <span class="product-price">KES 4,500</span>
+          <button class="add-to-cart" type="button">Add to cart</button>
         </div>
       </article>
 
       <!-- Item 4 -->
-      <article class="product-card">
+      <article class="product-card" data-product="Wireless Bluetooth Earbuds Noise-isolating in-ear headphones with charging case. Great battery life and clear microphone quality.">
         <div class="product-image-wrapper">
 <img src="img3.jpeg" alt="Wireless Bluetooth Earbuds">
         </div>
@@ -71,14 +91,52 @@
         <p class="product-description">Noise-isolating in-ear headphones with charging case. Great battery life and clear microphone quality.</p>
         <div class="product-footer">
           <span class="product-price">KES 3,000</span>
+          <button class="add-to-cart" type="button">Add to cart</button>
         </div>
       </article>
     </section>
+
+    <div class="no-results" role="status" hidden>
+      <span class="no-results-icon" aria-hidden="true">&#128269;</span>
+      <p>itemnot available</p>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2026 CampusMarket. All rights reserved.</p>
+    <p>&copy; 2026 UniStoreHub. All rights reserved.</p>
   </footer>
+
+  <script>
+    const searchInput = document.querySelector("#product-search");
+    const productCards = [...document.querySelectorAll(".product-card")];
+    const noResults = document.querySelector(".no-results");
+    const cartButton = document.querySelector(".cart-button");
+    const cartCount = document.querySelector(".cart-count");
+    let cartTotal = 0;
+
+    searchInput.addEventListener("input", (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      let visibleProducts = 0;
+
+      productCards.forEach((card) => {
+        const matches = card.dataset.product.toLowerCase().includes(query);
+        card.hidden = !matches;
+        visibleProducts += matches ? 1 : 0;
+      });
+
+      noResults.hidden = visibleProducts > 0;
+    });
+
+    document.querySelectorAll(".add-to-cart").forEach((button) => {
+      button.addEventListener("click", () => {
+        cartTotal += 1;
+        cartCount.textContent = cartTotal;
+        cartButton.setAttribute("aria-label", `Shopping cart, ${cartTotal} items`);
+        button.textContent = "Added to cart";
+        button.classList.add("added");
+      });
+    });
+  </script>
 
 </body>
 </html>
