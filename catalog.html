@@ -6,6 +6,7 @@
   <title>UniStoreHub | Product Catalog</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="favcon.png">
+  <script src="app.js" defer></script>
 </head>
 <body>
 
@@ -30,6 +31,16 @@
           <span class="visually-hidden">Search products</span>
           <input type="search" id="product-search" placeholder="Search products..." autocomplete="off">
         </label>
+        <label class="filter-box" for="category-filter">
+          <span>Category</span>
+          <select id="category-filter">
+            <option value="All">All</option>
+            <option value="Textbooks">Textbooks</option>
+            <option value="Tech">Tech</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Essentials">Essentials</option>
+          </select>
+        </label>
         <button class="cart-button" type="button" aria-label="Shopping cart, 0 items">
           <span class="cart-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
@@ -40,103 +51,34 @@
           <span class="cart-count" aria-live="polite">0</span>
         </button>
       </div>
+      <p class="cart-total" aria-live="polite">Cart total: KES <span id="cart-total">0</span></p>
     </section>
 
-    <section class="product-grid">
-      <!-- Item 1 -->
-      <article class="product-card" data-product="Calculus Textbooks (11th Ed) Hardcover edition in excellent condition with minimal highlighting. Perfect for MAT101.">
-        <div class="product-image-wrapper">
-            <img src="img2.jpeg" alt="Calculus Textbooks (11th Ed)">
+    <section class="gallery-section" aria-label="Product slideshow">
+      <div class="gallery-heading">
+        <div>
+          <p class="eyebrow">Selected finds</p>
+          <h2>Browse the collection</h2>
         </div>
-        <h2 class="product-title">Calculus Textbooks (11th Ed)</h2>
-        <p class="product-description">Hardcover edition in excellent condition with minimal highlighting. Perfect for MAT101.</p>
-        <div class="product-footer">
-          <span class="product-price">KES 2,500</span>
-          <button class="add-to-cart" type="button">Add to cart</button>
+        <div class="gallery-controls">
+          <button class="gallery-control" id="previous-slide" type="button" aria-label="Previous product">&#8592;</button>
+          <span id="slide-count" aria-live="polite">0 / 0</span>
+          <button class="gallery-control" id="next-slide" type="button" aria-label="Next product">&#8594;</button>
         </div>
-      </article>
-
-      <!-- Item 2 -->
-      <article class="product-card" data-product="Scientific Calculator & Note Pad Casio fx-991EX. Works perfectly, solar/battery powered. Essential for engineering/math courses.">
-        <div class="product-image-wrapper">
-           <img src="img1.jpeg" alt="Scientific Calculator">
-        </div>
-        <h2 class="product-title">Scientific Calculator & Note Pad</h2>
-        <p class="product-description">Casio fx-991EX. Works perfectly, solar/battery powered. Essential for engineering/math courses.</p>
-        <div class="product-footer">
-          <span class="product-price">KES 1,800</span>
-          <button class="add-to-cart" type="button">Add to cart</button>
-        </div>
-      </article>
-
-      <!-- Item 3 -->
-      <article class="product-card" data-product="Ergonomic Desk Chair Adjustable height with breathable mesh back. Lightweight and comfortable for study sessions.">
-        <div class="product-image-wrapper">
-<img src="img4.jpeg" alt="Ergonomic Desk chair">
-        </div>
-        <h2 class="product-title">Ergonomic Desk Chair</h2>
-        <p class="product-description">Adjustable height with breathable mesh back. Lightweight and comfortable for study sessions.</p>
-        <div class="product-footer">
-          <span class="product-price">KES 4,500</span>
-          <button class="add-to-cart" type="button">Add to cart</button>
-        </div>
-      </article>
-
-      <!-- Item 4 -->
-      <article class="product-card" data-product="Wireless Bluetooth Earbuds Noise-isolating in-ear headphones with charging case. Great battery life and clear microphone quality.">
-        <div class="product-image-wrapper">
-<img src="img3.jpeg" alt="Wireless Bluetooth Earbuds">
-        </div>
-        <h2 class="product-title">Wireless Bluetooth Earbuds</h2>
-        <p class="product-description">Noise-isolating in-ear headphones with charging case. Great battery life and clear microphone quality.</p>
-        <div class="product-footer">
-          <span class="product-price">KES 3,000</span>
-          <button class="add-to-cart" type="button">Add to cart</button>
-        </div>
-      </article>
+      </div>
+      <div id="product-gallery" class="product-gallery" aria-live="polite"></div>
+      <p class="gallery-empty" id="gallery-empty" hidden>No products match this search and category. Try another filter.</p>
     </section>
 
-    <div class="no-results" role="status" hidden>
-      <span class="no-results-icon" aria-hidden="true">&#128269;</span>
-      <p>itemnot available</p>
+    <section class="product-grid" id="product-grid" aria-label="Products"></section>
+    <div class="no-results" id="no-results" role="status" aria-live="polite" hidden>
+      <p>No products match this search and category. Try another filter.</p>
     </div>
   </main>
 
   <footer>
     <p>&copy; 2026 UniStoreHub. All rights reserved.</p>
   </footer>
-
-  <script>
-    const searchInput = document.querySelector("#product-search");
-    const productCards = [...document.querySelectorAll(".product-card")];
-    const noResults = document.querySelector(".no-results");
-    const cartButton = document.querySelector(".cart-button");
-    const cartCount = document.querySelector(".cart-count");
-    let cartTotal = 0;
-
-    searchInput.addEventListener("input", (event) => {
-      const query = event.target.value.trim().toLowerCase();
-      let visibleProducts = 0;
-
-      productCards.forEach((card) => {
-        const matches = card.dataset.product.toLowerCase().includes(query);
-        card.hidden = !matches;
-        visibleProducts += matches ? 1 : 0;
-      });
-
-      noResults.hidden = visibleProducts > 0;
-    });
-
-    document.querySelectorAll(".add-to-cart").forEach((button) => {
-      button.addEventListener("click", () => {
-        cartTotal += 1;
-        cartCount.textContent = cartTotal;
-        cartButton.setAttribute("aria-label", `Shopping cart, ${cartTotal} items`);
-        button.textContent = "Added to cart";
-        button.classList.add("added");
-      });
-    });
-  </script>
 
 </body>
 </html>

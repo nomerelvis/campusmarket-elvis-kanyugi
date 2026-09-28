@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniStoreHub | Register</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="favcon.png">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">UniStoreHub</a>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="catalog.html">Catalog</a></li>
+        <li><a href="register.html" class="active">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="register-main">
+    <section class="register-intro">
+      <p class="eyebrow">Join the campus community</p>
+      <h1>Create your account</h1>
+      <p>Register to buy and share useful finds with other students.</p>
+    </section>
+
+    <form id="register-form" class="register-form" novalidate>
+      <div class="form-field">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" autocomplete="name" aria-describedby="name-error">
+        <p class="field-error" id="name-error" aria-live="polite"></p>
+      </div>
+      <div class="form-field">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="text" inputmode="email" autocomplete="email" aria-describedby="email-error">
+        <p class="field-error" id="email-error" aria-live="polite"></p>
+      </div>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" aria-describedby="password-error">
+        <p class="field-error" id="password-error" aria-live="polite"></p>
+      </div>
+      <div class="form-field">
+        <label for="phone">Phone number</label>
+        <input id="phone" name="phone" type="text" inputmode="numeric" autocomplete="tel" aria-describedby="phone-error">
+        <p class="field-error" id="phone-error" aria-live="polite"></p>
+      </div>
+      <button class="btn" type="submit">Create account</button>
+      <p class="success-banner" id="register-success" aria-live="polite">Your account form was submitted successfully.</p>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 UniStoreHub. All rights reserved.</p>
+  </footer>
+</body>
+</html>
