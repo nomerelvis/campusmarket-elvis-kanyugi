@@ -312,59 +312,6 @@ footer {
   font-size: 0.9rem;
 }
 
-@media (max-width: 760px) {
-  header {
-    padding: 1rem;
-  }
-
-  nav ul {
-    gap: 0.8rem;
-  }
-
-  nav a {
-    font-size: 0.85rem;
-  }
-
-  .catalog-tools {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .search-box {
-    max-width: none;
-  }
-
-  .cart-button {
-    justify-content: center;
-  }
-
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2.5rem 0 3.5rem;
-  }
-
-  .hero h1 {
-    font-size: 3rem;
-  }
-
-  .hero-image,
-  .hero-image img {
-    min-height: 330px;
-  }
-
-  .section-heading {
-    align-items: start;
-    flex-direction: column;
-    padding: 3rem 0 1.5rem;
-  }
-
-  .features {
-    grid-template-columns: 1fr;
-    margin: 0 0 1rem;
-  }
-}
-
 .home-main {
   max-width: 1200px;
 }
@@ -830,9 +777,84 @@ footer {
   transition: max-height 280ms ease, opacity 280ms ease, transform 280ms ease;
 }
 
+/* Keep mobile overrides after base styles so narrow layouts take precedence. */
 @media (max-width: 760px) {
-  .gallery-slide {
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+  }
+
+  nav {
+    width: 100%;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  nav a {
+    font-size: 0.9rem;
+  }
+
+  main {
+    margin: 1.25rem auto;
+    padding: 0 0.875rem;
+  }
+
+  .catalog-tools {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .search-box {
+    max-width: none;
+  }
+
+  .cart-button {
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .hero {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding: 2.5rem 0 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2.6rem;
+  }
+
+  .hero-image,
+  .hero-image img {
+    min-height: 320px;
+  }
+
+  .image-note {
+    left: 1rem;
+    bottom: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 3rem 0 1.5rem;
+  }
+
+  .features {
     grid-template-columns: 1fr;
+    margin: 0 0 1rem;
+  }
+
+  .gallery-slide {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .gallery-slide img {
@@ -844,8 +866,13 @@ footer {
   }
 
   .gallery-heading {
-    align-items: start;
-    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .gallery-controls {
+    margin-left: auto;
   }
 
   .filter-box select {
@@ -854,5 +881,30 @@ footer {
 
   .cart-total {
     text-align: left;
+  }
+
+  .register-form {
+    padding: 1rem;
+  }
+
+  .register-form .btn {
+    justify-self: stretch;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 2.25rem;
+  }
+
+  .hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .gallery-controls {
+    gap: 0.5rem;
   }
 }
