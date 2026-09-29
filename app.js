@@ -72,6 +72,23 @@ function playSuccessAnimation(element) {
 	element.classList.add("is-visible");
 }
 
+function setupRevealAnimations() {
+	const revealElements = document.querySelectorAll("[data-reveal]");
+	if (!revealElements.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+	if (!("IntersectionObserver" in window)) return;
+
+	document.body.classList.add("reveal-enabled");
+	const observer = new IntersectionObserver((entries, currentObserver) => {
+		entries.forEach((entry) => {
+			if (!entry.isIntersecting) return;
+			entry.target.classList.add("is-visible");
+			currentObserver.unobserve(entry.target);
+		});
+	}, { threshold: 0.15 });
+
+	revealElements.forEach((element) => observer.observe(element));
+}
+
 function setupCatalog() {
 	const grid = document.querySelector("#product-grid");
 	if (!grid) return;
@@ -91,6 +108,20 @@ function setupCatalog() {
 	let slideshowIndex = 0;
 	let numberOfCartItems = 0;
 	const cartItems = new Map();
+	// Catalog image reveals are progressive; reduced-motion users see the images immediately.
+	const canRevealCatalogImages = !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+		&& "IntersectionObserver" in window;
+	let imageRevealObserver = null;
+	if (canRevealCatalogImages) {
+		document.body.classList.add("catalog-reveal-enabled");
+		imageRevealObserver = new IntersectionObserver((entries, observer) => {
+			entries.forEach((entry) => {
+				if (!entry.isIntersecting) return;
+				entry.target.classList.add("is-visible");
+				observer.unobserve(entry.target);
+			});
+		}, { threshold: 0.2, rootMargin: "0px 0px -40px 0px" });
+	}
 
 	function renderGallery() {
 		const product = visibleProducts[slideshowIndex];
@@ -127,12 +158,13 @@ function setupCatalog() {
 		});
 
 		slideshowIndex = 0;
+		imageRevealObserver?.disconnect();
 		grid.replaceChildren();
 		visibleProducts.forEach((product) => {
 			const card = document.createElement("article");
 			card.className = "product-card";
 			card.innerHTML = `
-				<div class="product-image-wrapper">
+				<div class="product-image-wrapper" data-catalog-image-reveal>
 					<img src="${product.image}" alt="${product.alt}">
 				</div>
 				<p class="product-category">${product.category}</p>
@@ -150,6 +182,13 @@ function setupCatalog() {
 				</div>`;
 			grid.append(card);
 		});
+		// Assign a fresh stagger and observe images after every search or filter render.
+		if (imageRevealObserver) {
+			grid.querySelectorAll("[data-catalog-image-reveal]").forEach((imageWrapper, index) => {
+				imageWrapper.style.setProperty("--reveal-delay", `${index * 140}ms`);
+				imageRevealObserver.observe(imageWrapper);
+			});
+		}
 
 		noResults.hidden = visibleProducts.length > 0;
 		renderGallery();
@@ -268,6 +307,7 @@ function setupRegistrationForm() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+	setupRevealAnimations();
 	setupCatalog();
 	setupRegistrationForm();
 });

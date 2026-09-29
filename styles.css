@@ -195,6 +195,26 @@ main {
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth bulge effect */
 }
 
+/* Catalog scroll reveal: each image eases inward as its card enters view. */
+@keyframes catalog-image-reveal {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.catalog-reveal-enabled .product-image-wrapper[data-catalog-image-reveal] {
+  opacity: 0;
+}
+
+.catalog-reveal-enabled .product-image-wrapper[data-catalog-image-reveal].is-visible {
+  animation: catalog-image-reveal 1.35s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms) both;
+}
+
 /* Expands / Bulges the image on hover */
 .product-card:hover .product-image-wrapper img {
   transform: scale(1.1); /* Adjust to 1.15 for an even larger bulge */
@@ -536,6 +556,32 @@ footer {
 .feature-card p {
   color: var(--text-muted);
   font-size: 0.92rem;
+}
+
+/* Homepage reveal motion is enabled only after the observer is ready. */
+.reveal-enabled [data-reveal="rise"] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.reveal-enabled [data-reveal="image"] {
+  opacity: 0;
+  transform: scale(1.035);
+  transition: opacity 800ms ease, transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal-enabled [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-enabled .feature-card:nth-child(2) {
+  transition-delay: 120ms;
+}
+
+.reveal-enabled .feature-card:nth-child(3) {
+  transition-delay: 240ms;
 }
 
 /* Catalog filters and slideshow */
